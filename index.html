@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    function capitalizar(cadena) {
+      if (cadena.length <= 0) return cadena;
+      cadena = cadena.toLowerCase(); // Convertir a minúsculas
+      return cadena.charAt(0).toUpperCase() + cadena.slice(1);
+    }
+    function crearRazonSocial() {
+      var primer_nombre = document.getElementById("primer_nombre").value;
+      var segundo_nombre = document.getElementById("segundo_nombre").value;
+      var primer_apellido = document.getElementById("primer_apellido").value;
+      var segundo_apellido = document.getElementById("segundo_apellido").value;
+
+      document.getElementById("razon_social").innerHTML = 
+        capitalizar(primer_nombre) + " " 
+        + capitalizar(segundo_nombre) + " " 
+        + capitalizar(primer_apellido) + " " 
+        + capitalizar(segundo_apellido);
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("primer_nombre").addEventListener("keyup", crearRazonSocial);
+      document.getElementById("segundo_nombre").addEventListener("keyup", crearRazonSocial);
+      document.getElementById("primer_apellido").addEventListener("keyup", crearRazonSocial);
+      document.getElementById("segundo_apellido").addEventListener("keyup", crearRazonSocial);
+    });
+  </script>
+</head>
+
+<body>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Primer Nombre</th>
+        <th>Segundo Nombre</th>
+        <th>Primer Apellido</th>
+        <th>Segundo Apellido</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <input type="text" name="primer_nombre" id="primer_nombre">
+          <!-- <input type="text" name="primer_nombre" id="primer_nombre" onkeyup="crearRazonSocial()"> -->
+        </td>
+        <td>
+          <input type="text" name="segundo_nombre" id="segundo_nombre">
+          <!-- <input type="text" name="segundo_nombre" id="segundo_nombre" onkeyup="crearRazonSocial()"> -->
+        </td>
+        <td>
+          <input type="text" name="primer_apellido" id="primer_apellido">
+          <!-- <input type="text" name="primer_apellido" id="primer_apellido" onkeyup="crearRazonSocial()"> -->
+        </td>
+        <td>
+          <input type="text" name="segundo_apellido" id="segundo_apellido">
+          <!-- <input type="text" name="segundo_apellido" id="segundo_apellido" onkeyup="crearRazonSocial()"> -->
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4">
+          <div>
+            Razón Social:
+            <span id="razon_social"></span>
+
+          </div>
+        </td>
+      </tr>
+  </table>
+
+</body>
+
+</html>
