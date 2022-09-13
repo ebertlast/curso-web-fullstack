@@ -18,11 +18,16 @@
       var primer_apellido = document.getElementById("primer_apellido").value;
       var segundo_apellido = document.getElementById("segundo_apellido").value;
 
-      document.getElementById("razon_social").innerHTML = 
-        capitalizar(primer_nombre) + " " 
+      var razon_social = capitalizar(primer_nombre) + " " 
         + capitalizar(segundo_nombre) + " " 
         + capitalizar(primer_apellido) + " " 
         + capitalizar(segundo_apellido);
+
+      razon_social = razon_social.replace(/  /g, " "); // Eliminar espacios dobles
+      razon_social = razon_social.trim(); // Eliminar espacios al inicio y al final
+
+      document.getElementById("razon_social").innerHTML = razon_social;
+        
     }
     document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("primer_nombre").addEventListener("keyup", crearRazonSocial);
@@ -30,17 +35,22 @@
       document.getElementById("primer_apellido").addEventListener("keyup", crearRazonSocial);
       document.getElementById("segundo_apellido").addEventListener("keyup", crearRazonSocial);
     });
+    function mostrarAlert(){
+      var razon_social = document.getElementById("razon_social").innerHTML
+      alert(razon_social)
+    }
   </script>
 </head>
 
 <body>
-  <table border="1">
+  <table border="0">
     <thead>
       <tr>
         <th>Primer Nombre</th>
         <th>Segundo Nombre</th>
         <th>Primer Apellido</th>
         <th>Segundo Apellido</th>
+        <th>Edad</th>
       </tr>
     </thead>
     <tbody>
@@ -61,6 +71,9 @@
           <input type="text" name="segundo_apellido" id="segundo_apellido">
           <!-- <input type="text" name="segundo_apellido" id="segundo_apellido" onkeyup="crearRazonSocial()"> -->
         </td>
+        <td>
+          <input type="number" name="edad" id="edad">
+        </td>
       </tr>
       <tr>
         <td colspan="4">
@@ -68,6 +81,13 @@
             Razón Social:
             <span id="razon_social"></span>
 
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4">
+          <div>
+            <button onclick="mostrarAlert()">Mostrar Razón Social</button>
           </div>
         </td>
       </tr>
