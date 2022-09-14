@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <script>
-    let capitalizar = (cadena) =>{
+    let capitalizar = (cadena) => {
       if (!cadena) return "";
       if (cadena.trim() === " ") return "";
       cadena=cadena.toLowerCase();
@@ -19,6 +19,18 @@
         cadenaNueva += palabra.charAt(0).toUpperCase() + palabra.slice(1) + " ";
       });
       return cadenaNueva.trim();
+    }
+
+    let explode = (cadena, separador) =>{
+      let objeto = {};
+      if (!cadena) return objeto;
+      if (cadena.trim() === "") return objeto;
+
+      objeto.cadena = cadena
+      objeto.separador = separador;
+      objeto.array = cadena.split(separador);
+      
+      return objeto;
     }
    
     function crearRazonSocial() {
@@ -44,6 +56,20 @@
       document.getElementById("primer_apellido").addEventListener("keyup", crearRazonSocial);
       document.getElementById("segundo_apellido").addEventListener("keyup", crearRazonSocial);
      
+
+      // Tests
+      if(false){
+        let cadena = "Jose Manuel Jimenez Perez";
+        let separador = " ";
+  
+        let objeto = explode(cadena, separador);
+        console.log("Objeto: ", objeto);
+        console.log("Cadena: ", objeto.cadena);
+        console.log("Separador: ", objeto.separador);
+        console.log("Array: ", objeto.array);
+      }
+      
+      
     });
     function mostrarAlert() {
       var razon_social = document.getElementById("razon_social").innerHTML
@@ -102,7 +128,8 @@
         </td>
       </tr>
   </table>
-
+  <hr>
+  <a href="api.html">Consumir Servicios REST</a>
 </body>
 
 </html>
