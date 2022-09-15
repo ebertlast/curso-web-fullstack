@@ -6,23 +6,66 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    .company {
+      text-decoration: underline;
+      color: blue;
+      cursor: pointer;
+    }
+  </style>
   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      getUsers();
+    });
     let getUsers = () => {
+      let btnLeerUsuarios = document.getElementById("btnLeerUsuarios");
+      btnLeerUsuarios.disabled = true;
+
       fetch("https://jsonplaceholder.typicode.com/users")
         .then(response => {
           // console.log("🚀 ~ file: api.html ~ line 12 ~ getUsers ~ response", response)
           return response.json()
         })
         .then(data => {
-          // let tbody = document.getElementById("cuerpoTabla")
-          // let newRow = tbody.insertRow()
-          // let i = 0
+          // Identificar Tabla
+          let table = document.getElementById("tableUsers");
+
           data.forEach(user => {
-            // let cell = newRow.insertCell(i++)
-            // cell.innerHTML = user.id
             console.log("User: ", user)
+            // Agregar nueva fila
+            let row = table.insertRow(-1);
+
+            // Agregar celdas
+            let cellId = row.insertCell(0);
+            let cellName = row.insertCell(1);
+            let cellUsername = row.insertCell(2);
+            let cellEmail = row.insertCell(3);
+            let cellPhone = row.insertCell(4);
+            let cellWebsite = row.insertCell(5);
+            let cellCompany = row.insertCell(6);
+
+            // Agregar contenido a las celdas
+            cellId.innerHTML = user.id;
+            cellName.innerHTML = user.name;
+            cellUsername.innerHTML = user.username;
+            cellEmail.innerHTML = user.email;
+            cellPhone.innerHTML = user.phone;
+            cellWebsite.innerHTML = "<a target='_blank' href='" + user.website + "'>" + user.website + "</a>";
+            
+            let companyJson = JSON.stringify(user.company).replace(/"/g, "'");
+            console.log(companyJson)
+
+            // cellCompany.innerHTML = '<span class="company" onclick="viewCompany(\'' + companyJson + '\')">' + user.company.name + "</span>";
+            cellCompany.innerHTML = `<span class="company" onclick="viewCompany('${companyJson}')">${user.company.name}</span>`;
+
           });
+        }).then(() => {
+          btnLeerUsuarios.disabled = false;
         })
+    }
+
+    let viewCompany = (company) => {
+      console.log("🚀 ~ file: api.html ~ line 65 ~ viewCompany ~ company", company)
     }
   </script>
 </head>
@@ -30,15 +73,20 @@
 <body>
   <a href="index.html">Regresar</a>
   <hr>
-  <button onclick="getUsers()">Leer Usuarios</button>
-  <table border="1" style="display: none">
+  <button onclick="getUsers()" id="btnLeerUsuarios">Leer Usuarios</button>
+  <table border="1" id="tableUsers">
     <thead>
       <tr>
         <th>Id</th>
         <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Website</th>
+        <th>Company</th>
       </tr>
     </thead>
-    <tbody id="cuerpoTabla">
+    <tbody>
     </tbody>
   </table>
 </body>
