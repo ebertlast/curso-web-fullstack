@@ -7,65 +7,84 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-    .company {
+    .link {
       text-decoration: underline;
       color: blue;
       cursor: pointer;
     }
+
+    .loader {
+      border: 16px solid #f3f3f3;
+      /* Light grey */
+      border-top: 16px solid #3498db;
+      /* Blue */
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .text-title {
+      font-weight: bold;
+      font-size: 30px;
+      background: darkgray;
+    }
   </style>
+  <script src="./users.js"></script>
   <script>
+    var users = [];
+    var posts = [];
+
     document.addEventListener("DOMContentLoaded", function () {
       getUsers();
     });
-    let getUsers = () => {
-      let btnLeerUsuarios = document.getElementById("btnLeerUsuarios");
-      btnLeerUsuarios.disabled = true;
 
-      fetch("https://jsonplaceholder.typicode.com/users")
+    let viewPosts = (userId) => {
+      if (!userId || userId < 1) return;
+      let loader = document.getElementById("loader");
+      loader.style.display = "block";
+      fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`)
         .then(response => {
-          // console.log("🚀 ~ file: api.html ~ line 12 ~ getUsers ~ response", response)
           return response.json()
         })
         .then(data => {
-          // Identificar Tabla
-          let table = document.getElementById("tableUsers");
+          posts = data;
+          loader.style.display = "none";
 
-          data.forEach(user => {
-            console.log("User: ", user)
-            // Agregar nueva fila
-            let row = table.insertRow(-1);
-
-            // Agregar celdas
-            let cellId = row.insertCell(0);
-            let cellName = row.insertCell(1);
-            let cellUsername = row.insertCell(2);
-            let cellEmail = row.insertCell(3);
-            let cellPhone = row.insertCell(4);
-            let cellWebsite = row.insertCell(5);
-            let cellCompany = row.insertCell(6);
-
-            // Agregar contenido a las celdas
-            cellId.innerHTML = user.id;
-            cellName.innerHTML = user.name;
-            cellUsername.innerHTML = user.username;
-            cellEmail.innerHTML = user.email;
-            cellPhone.innerHTML = user.phone;
-            cellWebsite.innerHTML = "<a target='_blank' href='" + user.website + "'>" + user.website + "</a>";
-            
-            let companyJson = JSON.stringify(user.company).replace(/"/g, "'");
-            console.log(companyJson)
-
-            // cellCompany.innerHTML = '<span class="company" onclick="viewCompany(\'' + companyJson + '\')">' + user.company.name + "</span>";
-            cellCompany.innerHTML = `<span class="company" onclick="viewCompany('${companyJson}')">${user.company.name}</span>`;
-
-          });
-        }).then(() => {
-          btnLeerUsuarios.disabled = false;
+          renderPosts();
         })
     }
 
-    let viewCompany = (company) => {
-      console.log("🚀 ~ file: api.html ~ line 65 ~ viewCompany ~ company", company)
+    let renderPosts = () => {
+      // clearUserTable();
+
+      // Identificar Tabla
+      let table = document.getElementById("tablePosts");
+
+      posts.forEach(post => {
+        // Agregar nueva fila
+        let row = table.insertRow(-1);
+
+        // Agregar celdas
+        let cellId = row.insertCell(0);
+        let cellTitle = row.insertCell(1);
+
+        // Agregar contenido a las celdas
+        cellId.innerHTML = post.id;
+        cellTitle.innerHTML = post.title;
+
+      });
+
     }
   </script>
 </head>
@@ -74,7 +93,9 @@
   <a href="index.html">Regresar</a>
   <hr>
   <button onclick="getUsers()" id="btnLeerUsuarios">Leer Usuarios</button>
+  <div class="loader" id="loader"></div>
   <table border="1" id="tableUsers">
+    <caption class="text-title">Users</caption>
     <thead>
       <tr>
         <th>Id</th>
@@ -84,11 +105,24 @@
         <th>Phone</th>
         <th>Website</th>
         <th>Company</th>
+        <th>Address</th>
+        <th colspan="2">Acciones</th>
       </tr>
     </thead>
     <tbody>
     </tbody>
   </table>
+  <br>
+  <table border="1" id="tablePosts">
+    <caption class="text-title">Posts</caption>
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Title</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
 </body>
 
 </html>
